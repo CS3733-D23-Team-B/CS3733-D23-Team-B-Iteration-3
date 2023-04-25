@@ -13,7 +13,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -22,14 +25,20 @@ public class CreateNewRequestController {
     @FXML MFXButton btnHome;
     @FXML private JFXHamburger menuBurger;
     @FXML private JFXDrawer menuDrawer;
+    @FXML private StackPane stackPane;
     @FXML private MFXComboBox cbRequestType;
     @FXML private VBox requestVbox;
     @FXML MFXButton btnAllRequests;
+    @FXML VBox vboxActivateNav;
+    @FXML VBox vboxActivateNav1;
     ELogin.PermissionLevel adminTest;
     private NavDrawerController navDrawerController;
+    private boolean navLoaded;
 
     @FXML
     public void initialize() throws IOException {
+        stackPane.setPickOnBounds(false);
+        menuDrawer.setPickOnBounds(false);
         initNavBar();
         requestVbox.getChildren().clear();
         requestVbox.setFillWidth(true);
@@ -40,6 +49,7 @@ public class CreateNewRequestController {
         }
         requestVbox.getChildren().clear();
         loadPage2();
+        stackPane.setMouseTransparent(true);
     }
 
     public void clickCbRequestType() {
@@ -144,6 +154,31 @@ public class CreateNewRequestController {
             }
         }
         cbRequestType.setItems(locations);
+        navLoaded = false;
+        activateNav();
+        deactivateNav();
+
+    }
+
+    public void activateNav(){
+        vboxActivateNav.setOnMouseEntered(event -> {
+//            if(!navLoaded) {
+                System.out.println("on");
+                stackPane.setMouseTransparent(false);
+                vboxActivateNav1.setMouseTransparent(false);
+//                navLoaded = true;
+//            }
+        });
+    }
+
+    public void deactivateNav(){
+        stackPane.setOnMouseClicked(event -> {
+            if(!navLoaded) {
+                System.out.println("off");
+                stackPane.setMouseTransparent(true);
+                vboxActivateNav1.setMouseTransparent(true);
+            }
+        });
     }
 
     public void initNavBar() {
@@ -154,6 +189,9 @@ public class CreateNewRequestController {
             VBox vbox = loader.load();
             NavDrawerController navDrawerController = loader.getController();
             menuDrawer.setSidePane(vbox);
+            stackPane.setMouseTransparent(true);
+            navLoaded = false;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,13 +200,19 @@ public class CreateNewRequestController {
         menuBurger.addEventHandler(
                 javafx.scene.input.MouseEvent.MOUSE_PRESSED,
                 (e) -> {
-                    burgerOpen.setRate(burgerOpen.getRate() * -1);
-                    burgerOpen.play();
-                    if (menuDrawer.isOpened()) {
-                        menuDrawer.close();
-                    } else {
-                        menuDrawer.open();
-                    }
+                        burgerOpen.setRate(burgerOpen.getRate() * -1);
+                        burgerOpen.play();
+                        if (menuDrawer.isOpened()) {
+                            menuDrawer.close();
+                            stackPane.setMouseTransparent(true);
+                            vboxActivateNav1.setMouseTransparent(false);
+                            navLoaded = false;
+                        } else {
+                            menuDrawer.open();
+                            navLoaded = true;
+                            vboxActivateNav1.setMouseTransparent(false);
+                        }
+//                    }
                 });
     }
 }

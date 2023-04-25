@@ -4,12 +4,12 @@
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
@@ -20,7 +20,7 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
             <children>
-                <StackPane layoutX="-240.0" layoutY="1.0" prefHeight="698.0" prefWidth="1253.0" />
+                <StackPane fx:id="stackPane1" layoutX="-48.0" layoutY="1.0" onMouseEntered="#deactivateNav" prefHeight="698.0" prefWidth="1063.0" />
                 <ImageView fitHeight="733.0" fitWidth="1316.0" layoutX="-172.0" layoutY="-12.0" opacity="0.5" pickOnBounds="true" preserveRatio="false">
                     <image>
                         <Image url="@../../img/bwh-background.jpg" />
@@ -41,19 +41,25 @@
                     <children>
                         <MFXComboBox fx:id="cbRequestType" floatingText="Request Type" onAction="#clickCbRequestType" prefHeight="56.0" prefWidth="260.0" />
                     </children></VBox>
+            <VBox fx:id="vboxActivateNav" layoutX="-170.0" onMouseEntered="#activateNav" prefHeight="720.0" prefWidth="70.0" />
                 <VBox fx:id="requestVbox" layoutX="-46.0" layoutY="160.0" prefHeight="470.0" prefWidth="1107.0" />
+            <VBox fx:id="vboxActivateNav1" layoutX="-47.0" onMouseClicked="#deactivateNav" prefHeight="720.0" prefWidth="1147.0" />
             </children>
         </AnchorPane>
     </center>
     <left>
-        <Pane fx:id="navPane" prefHeight="720.0" prefWidth="200.0">
-            <children>
-                <JFXDrawer fx:id="menuDrawer" prefHeight="720.0" prefWidth="200.0" />
-                <JFXHamburger fx:id="menuBurger" layoutX="14.0" layoutY="14.0">
+      <StackPane fx:id="stackPane">
+         <children>
+                <JFXDrawer fx:id="menuDrawer" overLayVisible="false" prefHeight="720.0" prefWidth="200.0" />
+                <JFXHamburger fx:id="menuBurger" maxHeight="26.0" maxWidth="26.0" StackPane.alignment="TOP_LEFT">
                     <effect>
                         <ColorAdjust brightness="1.0" />
-                    </effect></JFXHamburger>
-            </children>
-        </Pane>
+                    </effect>
+               <StackPane.margin>
+                  <Insets left="14.0" top="14.0" />
+               </StackPane.margin>
+            </JFXHamburger>
+         </children>
+      </StackPane>
     </left>
 </BorderPane>
