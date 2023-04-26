@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import edu.wpi.teamb.controllers.NavDrawerController;
-import edu.wpi.teamb.entities.ESignage;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 
@@ -20,9 +19,8 @@ public class SignageController {
 
   @FXML private JFXHamburger menuBurger;
   @FXML private JFXDrawer menuDrawer;
-  @FXML private MFXComboBox<String> cbLocation;
+  @FXML private MFXComboBox cbLocation;
   @FXML private VBox signVbox;
-  private ESignage signageE;
 
   @FXML
   public void initialize() throws IOException {
