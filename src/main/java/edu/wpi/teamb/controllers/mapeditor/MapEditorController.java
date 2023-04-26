@@ -888,7 +888,21 @@ public class MapEditorController {
     String selectedItem = getSelectedItem();
     String absolutePath = null;
     if (file != null) {
-      System.out.println(file.getAbsolutePath());
+      switch (selectedItem) {
+        case "Moves" -> Repository.getRepository().importMovesFromCSV(file.getAbsolutePath(), 2);
+        case "Nodes" -> Repository.getRepository().importNodesFromCSV(file.getAbsolutePath(), 2);
+        case "Edges" -> Repository.getRepository().importEdgesFromCSV(file.getAbsolutePath(), 2);
+        case "Location Names" -> Repository.getRepository().importLocationNamesFromCSV(file.getAbsolutePath(), 2);
+        case "Users" -> Repository.getRepository().importUsersFromCSV(file.getAbsolutePath(), 2);
+        case "Requests" -> Repository.getRepository().importRequestsFromCSV(file.getAbsolutePath(), 2);
+        case "Conference Requests" -> Repository.getRepository().importConferenceRequestsFromCSV(file.getAbsolutePath(), 2);
+        case "Flower Requests" -> Repository.getRepository().importFlowerRequestsFromCSV(file.getAbsolutePath(), 2);
+        case "Furniture Requests" -> Repository.getRepository().importFurnitureRequestsFromCSV(file.getAbsolutePath(), 2);
+        case "Meal Requests" -> Repository.getRepository().importMealRequestsFromCSV(file.getAbsolutePath(), 2);
+        case "Office Requests" -> Repository.getRepository().importOfficeRequestsFromCSV(file.getAbsolutePath(), 2);
+        case "Alerts" -> Repository.getRepository().importAlertsFromCSV(file.getAbsolutePath(), 2);
+        case "Signs" -> Repository.getRepository().importSignsFromCSV(file.getAbsolutePath(), 2);
+      }
     }
   }
 
