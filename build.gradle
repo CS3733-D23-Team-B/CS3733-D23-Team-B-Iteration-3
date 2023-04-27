@@ -47,6 +47,7 @@ dependencies {
             'net.java.dev.jna:jna:5.12.1',
             'com.jfoenix:jfoenix:9.0.10',
     )
+    implementation 'com.fazecast:jSerialComm:[2.0.0,3.0.0)'
     implementation 'org.testng:testng:7.1.0'
 
     String javaFxVersion = "19"
