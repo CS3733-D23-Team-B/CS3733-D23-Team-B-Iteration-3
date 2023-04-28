@@ -11,7 +11,9 @@ import edu.wpi.teamb.entities.ESignage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -22,12 +24,15 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import net.kurobako.gesturefx.GesturePane;
 
 public class SignageController {
@@ -35,6 +40,7 @@ public class SignageController {
   @FXML private JFXHamburger menuBurger;
   @FXML private JFXDrawer menuDrawer;
   @FXML private MFXComboBox<String> cbLocation;
+  @FXML private MFXButton btnSignageForm;
   @FXML private VBox signVbox;
   public GesturePane pane = new GesturePane();
     Group nodeGroup = new Group();
@@ -54,6 +60,7 @@ public class SignageController {
       initNavBar();
       initializeFields();
       initalizeComboBox();
+      init_signage_form_btn();
       signVbox.getChildren().clear();
 //      vboxImage.getChildren().clear();
       loadPageBasedOnGroup("Shapiro 2 Screen 1 (info desk) May 23");
@@ -90,6 +97,10 @@ public class SignageController {
         }
         ObservableList<String> signageGroupsObservableList = FXCollections.observableArrayList(signageGroupsList);
         cbLocation.setItems(signageGroupsObservableList);
+    }
+
+    private void init_signage_form_btn(){
+        btnSignageForm.setOnMouseClicked(e -> handleSignageForm());
     }
 
     public void clickCbLocation() {
@@ -189,4 +200,19 @@ public class SignageController {
                     }
                 });
     }
+
+    private void handleSignageForm() {
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("edu/wpi/teamb/views/SignageForm.fxml")));
+            Stage stage = new Stage();
+            stage.setTitle("Update Signage");
+            stage.setScene(new Scene(root, 1280, 720));
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

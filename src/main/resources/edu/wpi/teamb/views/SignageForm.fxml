@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<!--<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.teamb.controllers.CreditsController" prefHeight="400.0" prefWidth="600.0">-->
+<!--    -->
+<!--</AnchorPane>-->
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #7089a2;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamb.controllers.signage.SignageFormController">
+    <children>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" layoutX="-162.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1443.0" />
+        <Text fill="WHITE" layoutX="-21.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Signage Information" textAlignment="CENTER" wrappingWidth="1164.103515625">
+            <font>
+                <Font name="System Bold" size="36.0" />
+            </font>
+        </Text>
+        <VBox layoutX="26.0" layoutY="319.0" prefHeight="285.0" prefWidth="125.0" />
+        <Pane layoutX="163.0" layoutY="65.0" prefHeight="591.0" prefWidth="797.0">
+         <children>
+            <MFXFilterComboBox fx:id="sign1" layoutX="137.0" layoutY="78.0" prefHeight="50.0" prefWidth="430.0" />
+            <MFXButton fx:id="submit" layoutX="663.0" layoutY="543.0" text="Submit Changes" />
+            <MFXTextField allowEdit="false" layoutX="27.0" layoutY="79.0" text="Sign 1" />
+            <MFXFilterComboBox fx:id="sign2" layoutX="137.0" layoutY="149.0" prefHeight="50.0" prefWidth="430.0" />
+            <MFXTextField allowEdit="false" layoutX="27.0" layoutY="150.0" text="Sign 2" />
+            <MFXFilterComboBox fx:id="sign3" layoutX="137.0" layoutY="222.0" prefHeight="50.0" prefWidth="430.0" />
+            <MFXTextField allowEdit="false" layoutX="27.0" layoutY="223.0" text="Sign 3" />
+            <MFXFilterComboBox fx:id="sign4" layoutX="137.0" layoutY="296.0" prefHeight="50.0" prefWidth="430.0" />
+            <MFXTextField allowEdit="false" layoutX="27.0" layoutY="297.0" text="Sign 4" />
+            <MFXFilterComboBox fx:id="sign5" layoutX="137.0" layoutY="367.0" prefHeight="50.0" prefWidth="430.0" />
+            <MFXTextField allowEdit="false" layoutX="27.0" layoutY="368.0" text="Sign 5" />
+            <MFXFilterComboBox fx:id="sign6" layoutX="137.0" layoutY="436.0" prefHeight="50.0" prefWidth="430.0" />
+            <MFXTextField allowEdit="false" layoutX="27.0" layoutY="437.0" text="Sign 1" />
+            <MFXComboBox fx:id="signageGroupBox" layoutX="27.0" layoutY="14.0" prefHeight="48.0" prefWidth="342.0" text="Signage Group" />
+         </children></Pane>
+        <MFXButton fx:id="btnClose" layoutX="1163.0" layoutY="646.0" mnemonicParsing="false" text="Close" />
+    </children>
+</Pane>
