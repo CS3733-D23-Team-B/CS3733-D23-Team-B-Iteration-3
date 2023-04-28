@@ -6,7 +6,6 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import edu.wpi.teamb.Bapp;
 import edu.wpi.teamb.DBAccess.DAO.Repository;
 import edu.wpi.teamb.DBAccess.ORMs.Alert;
-import edu.wpi.teamb.DBAccess.ORMs.User;
 import edu.wpi.teamb.entities.ELogin;
 import edu.wpi.teamb.entities.EHome;
 import edu.wpi.teamb.navigation.Navigation;
@@ -34,12 +33,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -57,9 +51,7 @@ public class HomeController {
     @FXML private MFXButton btnClear;
     @FXML private MFXButton viewUserRequestButton;
     @FXML private TableView<Alert> alertsTable;
-    @FXML private VBox vboxWelcomeBack;
     private MFXButton pathfinderImgBtn = new MFXButton();
-    private boolean navLoaded;
 
     private String username;
 
@@ -69,8 +61,6 @@ public class HomeController {
     @FXML
     public void initialize() throws IOException {
         username = ELogin.getLogin().getUsername();
-
-        initName();
         initNavBar();
         initPathfinderBtn();
         initializeBtns();
@@ -78,20 +68,6 @@ public class HomeController {
         homeE = new EHome();
         bounds = homePane.getBoundsInLocal();
 
-
-        initializeNavGates();
-    }
-
-    private void initName(){
-        User grabUser = Repository.getRepository().getUser(username);
-        String user = grabUser.getName();
-        Text welcomeBack = new Text();
-        welcomeBack.setFill(Color.WHITE);
-        welcomeBack.setFont(Font.font("System", FontWeight.BOLD, 36));
-        welcomeBack.setText("Welcome " + user);
-        welcomeBack.toFront();
-        vboxWelcomeBack.getChildren().clear();
-        vboxWelcomeBack.getChildren().add(welcomeBack);
     }
 
     private void initPathfinderBtn() {
@@ -112,17 +88,14 @@ public class HomeController {
         alertsTable.setEditable(false);
         TableColumn<Alert, String> titles = new TableColumn<>("Title");
         titles.setMinWidth(100);
-        titles.setStyle("-fx-alignment: CENTER;");
         titles.setCellValueFactory(new PropertyValueFactory<>("title"));
 
         TableColumn<edu.wpi.teamb.DBAccess.ORMs.Alert, String> descriptions = new TableColumn<>("Description");
-        descriptions.setStyle("-fx-alignment: CENTER;");
         descriptions.setMinWidth(220);
         descriptions.setCellValueFactory(new PropertyValueFactory<>("description"));
 
 
         TableColumn<edu.wpi.teamb.DBAccess.ORMs.Alert, Timestamp> time = new TableColumn<>("Created at");
-        time.setStyle("-fx-alignment: CENTER;");
         time.setCellValueFactory((new PropertyValueFactory<>("createdAt")));
         alertsTable.getColumns().addAll(titles, descriptions, time);
         time.setSortType(TableColumn.SortType.DESCENDING);
@@ -266,41 +239,21 @@ public class HomeController {
     public void activateNav(){
         vboxActivateNav.setOnMouseEntered(event -> {
 //            if(!navLoaded) {
-                System.out.println("on");
-                navPane.setMouseTransparent(false);
-                navLoaded = true;
-                vboxActivateNav.setDisable(true);
-                vboxActivateNav1.setDisable(false);
+            System.out.println("on");
+            navPane.setMouseTransparent(false);
+            navPane.setMouseTransparent(false);
+//                navLoaded = true;
 //            }
         });
     }
 
-    /**
-     * For some reason there are occasions when the nav-bar gates for toggling its handling does not start correctly
-     * This fixes this issue
-     */
-    public void initializeNavGates(){
-        activateNav();
-        deactivateNav();
-        navPane.setMouseTransparent(true);
-        vboxActivateNav.setDisable(false);
-        navLoaded = false;
-        vboxActivateNav1.setDisable(true);
-    }
-
-    /**
-     * Utilizes a gate to swap between handling the navdrawer and the rest of the page
-     * Swaps ownership of the strip to the page
-     */
     public void deactivateNav(){
-        vboxActivateNav1.setOnMouseEntered(event -> {
-            if(navLoaded){
+        navPane.setOnMouseClicked(event -> {
+//            if(!navLoaded) {
                 System.out.println("off");
                 navPane.setMouseTransparent(true);
-                vboxActivateNav.setDisable(false);
-                navLoaded = false;
-                vboxActivateNav1.setDisable(true);
-            }
+                vboxActivateNav1.setMouseTransparent(true);
+//            }
         });
     }
 
@@ -332,10 +285,7 @@ public class HomeController {
                     burgerOpen.play();
                     if (menuDrawer.isOpened()) {
                         menuDrawer.close();
-                        vboxActivateNav1.toFront();
                     } else {
-                        menuDrawer.toFront();
-                        menuBurger.toFront();
                         menuDrawer.open();
                     }
                 });

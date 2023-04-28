@@ -9,7 +9,7 @@ import edu.wpi.teamb.entities.requests.IRequest;
 import edu.wpi.teamb.navigation.Navigation;
 import edu.wpi.teamb.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
@@ -24,27 +24,28 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 
 public class FurnitureRequestControllerI implements IRequestController{
 
     @FXML
     private MFXButton btnSubmit;
     @FXML
+    private MFXButton btnCancel;
+    @FXML
     private MFXButton btnReset;
     @FXML
     private ImageView helpIcon;
     @FXML
-    private MFXFilterComboBox<String> cbAvailableFurniture;
+    private MFXComboBox<String> cbAvailableFurniture;
     @FXML
-    private MFXFilterComboBox<String> cdAvailableModels;
+    private MFXComboBox<String> cdAvailableModels;
     @FXML
-    private MFXFilterComboBox<String> cdAssembly;
+    private MFXComboBox<String> cdAssembly;
     @FXML
     private MFXTextField txtFldNotes;
 
     @FXML
-    private MFXFilterComboBox<String> cbEmployeesToAssign;
+    private MFXComboBox<String> cbEmployeesToAssign;
 
     @FXML private MFXFilterComboBox<String> cbLongName;
 
@@ -56,6 +57,9 @@ public class FurnitureRequestControllerI implements IRequestController{
 
     @FXML
     public void initialize() throws IOException, SQLException {
+        ObservableList<String> longNames = FXCollections.observableArrayList();
+        longNames.addAll(Repository.getRepository().getPracticalLongNames());
+        cbLongName.setItems(longNames);
         initializeFields();
         initBtns();
     }
@@ -64,37 +68,29 @@ public class FurnitureRequestControllerI implements IRequestController{
     public void initBtns() {
         btnSubmit.setOnAction(e -> handleSubmit());
         btnReset.setOnAction(e -> handleReset());
+        btnCancel.setOnAction(e -> handleCancel());
         helpIcon.setOnMouseClicked(e -> handleHelp());
     }
 
     @Override
     public void initializeFields() throws SQLException {
-        ObservableList<String> longNames = FXCollections.observableArrayList();
-        longNames.addAll(Repository.getRepository().getPracticalLongNames());
-        Collections.sort(longNames);
-        cbLongName.setItems(longNames);
-
         //Set list of furniture
         ObservableList<String> furniture = FXCollections.observableArrayList("Chair", "Couch", "Table", "Desk", "Bed");
-        Collections.sort(furniture);
         cbAvailableFurniture.setItems(furniture);
 
         //Set list of models
         ObservableList<String> models = FXCollections.observableArrayList("Huge", "Big", "Medium", "Small", "Tiny");
-        Collections.sort(models);
         cdAvailableModels.setItems(models);
 
         //Set list of assembly options
         ObservableList<String> assembly = FXCollections.observableArrayList("No", "Yes");
-        Collections.sort(assembly);
         cdAssembly.setItems(assembly);
 
         //Set list of employees
         ObservableList<String> employees =
                 FXCollections.observableArrayList();
+        employees.add("Unassigned");
         employees.addAll(EFurnitureRequest.getUsernames());
-        Collections.sort(employees);
-        employees.add(0, "Unassigned");
         cbEmployeesToAssign.setItems(employees);
     }
 
@@ -134,12 +130,13 @@ public class FurnitureRequestControllerI implements IRequestController{
 
     @Override
     public void handleReset() {
-        cbAvailableFurniture.clear();
-        cdAvailableModels.clear();
-        cdAssembly.clear();
+        cbAvailableFurniture.getSelectionModel().clearSelection();
+        cdAvailableModels.getSelectionModel().clearSelection();
+        cdAssembly.getSelectionModel().clearSelection();
         txtFldNotes.clear();
-        cbEmployeesToAssign.clear();
+        cbEmployeesToAssign.getSelectionModel().clearSelection();
         cbLongName.clear();
+        cbLongName.replaceSelection("All Room Names: ");
     }
 
     @Override
@@ -223,5 +220,6 @@ public class FurnitureRequestControllerI implements IRequestController{
 
         //set the reset and cancel buttons to not be visible
         btnReset.setVisible(false);
+        btnCancel.setVisible(false);
     }
 }

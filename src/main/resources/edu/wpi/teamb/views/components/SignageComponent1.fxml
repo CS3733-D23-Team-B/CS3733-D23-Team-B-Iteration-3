@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="360.0" prefWidth="695.0" style="-fx-background-color: #e6e6e6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamb.controllers.components.SignageComponent1Controller">
+<AnchorPane prefHeight="360.0" prefWidth="695.0" style="-fx-background-color: #e6e6e6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamb.controllers.signage.SignageComponent1Controller">
    <children>
       <VBox fx:id="signsContainerVBox" layoutX="41.0" layoutY="60.0" prefHeight="360.0" prefWidth="695.0" />
    </children>

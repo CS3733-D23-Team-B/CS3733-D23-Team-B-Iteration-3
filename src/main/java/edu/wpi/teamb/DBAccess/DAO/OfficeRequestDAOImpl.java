@@ -29,11 +29,19 @@ public class OfficeRequestDAOImpl implements IDAO {
     @Override
     public FullOfficeRequest get(Object id) {
         Integer idInt = (Integer) id;
-        for (FullOfficeRequest or : officeRequests) {
-            if (or.getId() == idInt) {
-                return or;
-            }
-        } return null;
+        OfficeRequest or = null;
+        Request r = null;
+        try {
+            ResultSet rs = DButils.getRowCond("officerequests", "*", "id = " + idInt);
+            rs.next();
+            or = new OfficeRequest(rs);
+            ResultSet rs1 = RequestDAOImpl.getDBRowID(idInt);
+            rs1.next();
+            r = new Request(rs1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return new FullOfficeRequest(r, or);
     }
 
     /**
@@ -93,8 +101,7 @@ public class OfficeRequestDAOImpl implements IDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        FullOfficeRequest ofr = new FullOfficeRequest(id, officeReq[0], dateSubmitted, officeReq[1], officeReq[2], officeReq[3], officeReq[4], officeReq[5], Integer.valueOf(officeReq[6]));
-        officeRequests.add(ofr);
+        officeRequests.add(new FullOfficeRequest(id, officeReq[0], dateSubmitted, officeReq[1], officeReq[2], officeReq[3], officeReq[4], officeReq[5], Integer.valueOf(officeReq[6])));
         RequestDAOImpl.getRequestDaoImpl().getAll().add(new Request(id, officeReq[0], dateSubmitted, officeReq[1], "Office", officeReq[2], officeReq[3]));
     }
 
@@ -109,7 +116,7 @@ public class OfficeRequestDAOImpl implements IDAO {
         DButils.deleteRow("officerequests", "id =" + ffr.getId() + "");
         DButils.deleteRow("requests", "id =" + ffr.getId() + "");
         officeRequests.remove(ffr);
-        Request req = new Request(ffr);
+        Request req = new Request(ffr.getId(), ffr.getEmployee(), ffr.getDateSubmitted(), ffr.getRequestStatus(), ffr.getRequestType(), ffr.getLocationName(), ffr.getNotes());
         RequestDAOImpl.getRequestDaoImpl().getAll().remove(req);
     }
 
@@ -134,7 +141,7 @@ public class OfficeRequestDAOImpl implements IDAO {
                 officeRequests.set(i, ofr);
             }
         }
-        Request req = new Request(ofr);
+        Request req = new Request(ofr.getId(), ofr.getEmployee(), ofr.getDateSubmitted(), ofr.getRequestStatus(), ofr.getRequestType(), ofr.getLocationName(), ofr.getNotes());
         RequestDAOImpl.getRequestDaoImpl().update(req);
     }
 

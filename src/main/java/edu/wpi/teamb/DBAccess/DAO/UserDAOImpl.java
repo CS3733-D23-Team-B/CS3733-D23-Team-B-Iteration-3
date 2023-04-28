@@ -23,12 +23,20 @@ public class UserDAOImpl implements IDAO {
      */
     @Override
     public User get(Object id) {
-        String idStr = (String) id;
-        for (User u : users) {
-            if (u.getUsername().equals(idStr)) {
-                return u;
-            }
-        } return null;
+        String username = (String) id;
+        ResultSet rs = DButils.getRowCond("Users", "*", "username = '" + username + "'");
+        try {
+            if (rs != null) {
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    return new User(rs);
+                } else throw new SQLException("No rows found"); }
+        } catch (SQLException e) {
+            // handle error
+            System.err.println("ERROR Query Failed in method 'UserDAOImpl.get': " + e.getMessage());
+            return null;
+        }
+        return null;
     }
 
     /**

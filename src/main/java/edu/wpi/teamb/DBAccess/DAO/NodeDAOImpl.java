@@ -103,7 +103,7 @@ public class NodeDAOImpl implements IDAO {
     @Override
     public void update(Object n) {
         Node node = (Node) n;
-        String[] values = {String.valueOf(node.getNodeID()), String.valueOf(node.getxCoord()), String.valueOf(node.getyCoord()), node.getFloor(), node.getBuilding()};
+        String[] values = {node.getNodeID() + "", node.getxCoord() + "", node.getyCoord() + "", node.getFloor() + "", node.getBuilding()};
         updateRow(values);
         for (int i = 0; i < nodes.size(); i++) {
             if (nodes.get(i).getNodeID() == node.getNodeID()) {
@@ -217,24 +217,6 @@ public class NodeDAOImpl implements IDAO {
         return nds;
     }
 
-    public ArrayList<FullNode> getFullNodesFromFloor(String floor) {
-        ResultSet rs = joinFullNodesCond("floor = '" + floor + "'");
-        ArrayList<FullNode> nds = new ArrayList<FullNode>();
-        while (true) {
-            try {
-                if (!rs.next()) break;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                nds.add(new FullNode(rs));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return nds;
-    }
-
     /**
      * Gets a ResultSet of rows from the Nodes table that match the given building
      *
@@ -297,7 +279,8 @@ public class NodeDAOImpl implements IDAO {
      */
     public void resetNodesFromBackup() {
 
-        String dropMove = "DROP TABLE IF EXISTS Moves";
+        String dropMoves = "DROP TABLE IF EXISTS Moves";
+        String dropSigns = "DROP TABLE IF EXISTS Signs";
         String dropLocationNames = "DROP TABLE IF EXISTS LocationNames";
         String dropNodes = "DROP TABLE IF EXISTS Nodes";
 
@@ -306,7 +289,8 @@ public class NodeDAOImpl implements IDAO {
         try {
 
             dropStatement = DBconnection.getDBconnection().getConnection().createStatement();
-            dropStatement.executeUpdate(dropMove);
+            dropStatement.executeUpdate(dropMoves);
+            dropStatement.executeUpdate(dropSigns);
             dropStatement.executeUpdate(dropLocationNames);
             dropStatement.executeUpdate(dropNodes);
             dropStatement.close();
@@ -324,11 +308,23 @@ public class NodeDAOImpl implements IDAO {
                 CREATE TABLE moves (nodeID INT, longName VARCHAR(255), date VARCHAR(20), primary key (nodeID, longName, date),
                 constraint fk_nodeID foreign key(nodeID) references nodes(nodeID),
                 constraint fk_longName foreign key(longName) references locationnames(longName));
+                
+                CREATE TABLE signs (signageGroup varchar(255) NOT NULL,
+                        locationName text NOT NULL DEFAULT '',
+                        direction varchar(255) NOT NULL DEFAULT 'stop here',
+                        startDate date NOT NULL DEFAULT CURRENT_DATE,
+                        endDate date,
+                        singleBlock boolean DEFAULT true,
+                        signLocation varchar(255) DEFAULT 'Info Node 19 Floor 2',
+                        constraint fk_longName foreign key (signLocation) references locationnames(longName)
+                        on update cascade on delete set default,
+                        PRIMARY KEY (signageGroup, locationName, startDate))
                 """;
 
         String recreateNodes = "INSERT INTO Nodes SELECT * FROM NodeBackup";
         String recreateLocationNames = "INSERT INTO LocationNames SELECT * FROM LocationNameBackup";
         String recreateMove = "INSERT INTO Moves SELECT * FROM MoveBackup";
+        String recreateSigns = "INSERT INTO Signs SELECT * FROM SignBackup";
 
         Statement recreateStatement = null;
 
@@ -339,6 +335,7 @@ public class NodeDAOImpl implements IDAO {
             recreateStatement.executeUpdate(recreateNodes);
             recreateStatement.executeUpdate(recreateLocationNames);
             recreateStatement.executeUpdate(recreateMove);
+            recreateStatement.executeUpdate(recreateSigns);
             recreateStatement.close();
 
         } catch (SQLException e) {
@@ -551,19 +548,6 @@ public class NodeDAOImpl implements IDAO {
         try{
             Statement stmt = DBconnection.getDBconnection().getConnection().createStatement();
             String query = "SELECT * FROM nodes, moves, locationnames WHERE nodes.nodeid = moves.nodeid AND moves.longname = locationnames.longname";
-            ResultSet rs = stmt.executeQuery(query);
-            return rs;
-        } catch (SQLException e) {
-            System.err.println("ERROR Query Failed in method 'NodeDAOImpl.joinFullNode's: " + e.getMessage());
-            return null;
-        }
-    }
-
-
-    public ResultSet joinFullNodesCond(String cond) {
-        try{
-            Statement stmt = DBconnection.getDBconnection().getConnection().createStatement();
-            String query = "SELECT * FROM nodes, moves, locationnames WHERE nodes.nodeid = moves.nodeid AND moves.longname = locationnames.longname AND " + cond;
             ResultSet rs = stmt.executeQuery(query);
             return rs;
         } catch (SQLException e) {

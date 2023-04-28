@@ -1,6 +1,5 @@
 package edu.wpi.teamb.DBAccess.ORMs;
 import edu.wpi.teamb.DBAccess.DButils;
-import edu.wpi.teamb.DBAccess.Full.IFull;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -45,18 +44,6 @@ public class Request {
             rs.getString("requesttype"),
             rs.getString("locationname"),
             rs.getString("notes")
-    );
-  }
-
-  public Request(IFull full) {
-    this(
-            full.getId(),
-            full.getEmployee(),
-            full.getDateSubmitted(),
-            full.getRequestStatus(),
-            full.getRequestType(),
-            full.getLocationName(),
-            full.getNotes()
     );
   }
 

@@ -20,13 +20,20 @@ public class SignDAOImpl implements IDAO {
     }
     @Override
     public Sign get(Object id) {
-        String idString = (String) id;
-        for (Sign s : signs) {
-            if (s.getSignageGroup().equals(idString)) {
-                return s;
-            }
-        } return null;
+        String signageGroup = id.toString();
+        ResultSet rs = DButils.getRowCond("signs", "*", "signageGroup like " + signageGroup);
+        try {
+            if (rs.isBeforeFirst()) { // if there is something it found
+                rs.next();
+                return new Sign(rs); // make the edge
+            } else
+                throw new SQLException("No rows found");
+        } catch (SQLException e) {
+            System.err.println("ERROR Query Failed in method 'SignDAOImpl.get': " + e.getMessage());
+            return null;
+        }
     }
+
     @Override
     public ArrayList<Sign> getAll() {
         return signs;
@@ -82,28 +89,28 @@ public class SignDAOImpl implements IDAO {
 
     public void insertSign(Sign s) {
         String[] cols = { "signageGroup", "locationName", "direction", "startDate", "endDate", "singleBlock" };
-        String[] values = {s.getSignageGroup(), s.getLocationName(), s.getDirection(), String.valueOf(s.getStartDate()), String.valueOf(s.getEndDate()), String.valueOf(s.isSingleBlock())};
+        String[] values = { "'" + s.getSignageGroup() + "'", "'" + s.getLocationName() + "'", "'" + s.getDirection() + "'", "'" + s.getStartDate() + "'", "'" + s.getEndDate() + "'", "'" + s.isSingleBlock() + "'" };
         DButils.insertRow("signs", cols, values);
     }
 
     public void deleteSignGroup(Sign s) {
-        DButils.deleteRow("signs", "signagegroup = '" + s.getSignageGroup() + "'");
+        DButils.deleteRow("signs", "signageGroup like " + s.getSignageGroup() + "");
     }
 
     public void deleteSpecificSign(Sign s) {
-        DButils.deleteRow("signs", "signagegroup = '" + s.getSignageGroup() + "' AND locationName = '" + s.getLocationName() + "'");
+        DButils.deleteRow("signs", "signageGroup like " + s.getSignageGroup() + "" + " and locationName like " + s.getLocationName() + "");
     }
 
     public void updateSign(Sign s) {
         String[] cols = { "locationName", "direction", "startDate", "endDate" };
-        String[] values = {s.getLocationName(), s.getDirection(), String.valueOf(s.getStartDate()), String.valueOf(s.getEndDate())};
-        DButils.updateRow("signs", cols, values, "signagegroup = '" + s.getSignageGroup() + "' AND locationName = '" + s.getLocationName() + "'");
+        String[] values = { "'" + s.getLocationName() + "'", "'" + s.getDirection() + "'", "'" + s.getStartDate() + "'", "'" + s.getEndDate() + "'" };
+        DButils.updateRow("signs", cols, values, "signageGroup like " + s.getSignageGroup() + "" + " and locationName like " + s.getLocationName() + "");
     }
 
     public void updateSignageGroup(Sign s) {
         String[] cols = { "singleBlock" };
-        String[] values = {String.valueOf(s.isSingleBlock())};
-        DButils.updateRow("signs", cols, values, "signagegroup = '" + s.getSignageGroup() + "'");
+        String[] values = { "'" + s.isSingleBlock() + "'" };
+        DButils.updateRow("signs", cols, values, "signageGroup like " + s.getSignageGroup() + "");
     }
 
     public HashSet<String> getSignageGroupsFromDB() {

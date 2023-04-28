@@ -611,7 +611,7 @@ public class DBoutput {
                 default -> throw new IllegalStateException("Unexpected value: " + location);
             };
 
-            bw.write("signageGroup,locationName,direction,startDate,endDate,singleBlock");
+            bw.write("signageGroup,locationName,direction,startDate,endDate,singleBlock,signLocation");
 
             while (allRS.next()) {
                 String signageGroup = allRS.getString("signageGroup");
@@ -620,9 +620,10 @@ public class DBoutput {
                 Date startDate = allRS.getDate("startDate");
                 Date endDate = allRS.getDate("endDate");
                 String singleBlock = allRS.getString("singleBlock");
+                String signLocation = allRS.getString("signLocation");
 
 
-                String line = String.format("%s,%s,%s,%s,%s,%s", signageGroup, locationName, direction, startDate.toString(), endDate.toString(), singleBlock);
+                String line = String.format("%s,%s,%s,%s,%s,%s,%s", signageGroup, locationName, direction, startDate.toString(), endDate.toString(), singleBlock, signLocation);
 
                 bw.newLine();
                 bw.write(line);

@@ -1,7 +1,6 @@
 package edu.wpi.teamb.DBAccess.ORMs;
 
 import edu.wpi.teamb.DBAccess.DButils;
-import edu.wpi.teamb.DBAccess.Full.FullNode;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -72,15 +71,6 @@ public class Node {
                 rs.getInt("ycoord"),
                 rs.getString("floor"),
                 rs.getString("building"));
-    }
-
-    public Node(FullNode fn) {
-        this(
-                fn.getNodeID(),
-                fn.getxCoord(),
-                fn.getxCoord(),
-                fn.getFloor(),
-                fn.getBuilding());
     }
 
     // Getters and Setters

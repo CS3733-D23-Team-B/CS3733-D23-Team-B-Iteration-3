@@ -25,12 +25,19 @@ public class MoveDAOImpl implements IDAO {
      */
     @Override
     public Move get(Object id) {
-        int idInt = (Integer) id;
-        for (Move m : moves) {
-            if (m.getNodeID() == idInt) {
-                return m;
-            }
-        } return null;
+        ResultSet rs = DButils.getRowCond("Moves", "*", "nodeID = " + id + "");
+        try {
+            if (rs.isBeforeFirst()) {
+                rs.next();
+                return new Move(rs);
+            } else
+                throw new SQLException("No rows found");
+        } catch (SQLException e) {
+            // handle error
+
+            System.err.println("ERROR Query Failed: " + e.getMessage());
+            return null;
+        }
     }
 
     /**

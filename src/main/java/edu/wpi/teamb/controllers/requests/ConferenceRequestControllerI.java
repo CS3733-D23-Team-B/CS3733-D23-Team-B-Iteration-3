@@ -9,7 +9,6 @@ import edu.wpi.teamb.entities.requests.IRequest;
 import edu.wpi.teamb.navigation.Navigation;
 import edu.wpi.teamb.navigation.Screen;
 import edu.wpi.teamb.utils.TimeFormattingHelpers;
-import io.github.palexdev.materialfx.beans.NumberRange;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,24 +23,23 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 
 
 public class ConferenceRequestControllerI implements IRequestController{
 
-    @FXML private MFXFilterComboBox<Integer> reservationHour;
-    @FXML private MFXFilterComboBox<String> reservationMinute;
-    @FXML private MFXFilterComboBox<String> reservationAmPm;
+    @FXML private MFXComboBox<Integer> reservationHour;
+    @FXML private MFXComboBox<String> reservationMinute;
+    @FXML private MFXComboBox<String> reservationAmPm;
     @FXML private MFXDatePicker datePicker;
-    @FXML private MFXFilterComboBox<String> cbEmployeesToAssign;
+    @FXML private MFXComboBox<String> cbEmployeesToAssign;
     @FXML private MFXTextField eventNameTextField;
     @FXML private MFXTextField bookingReasonTextField;
-    @FXML private MFXFilterComboBox<Integer> cbDuration;
+    @FXML private MFXComboBox<Integer> cbDuration;
     @FXML private MFXFilterComboBox<String> cbLongName;
     @FXML private MFXTextField tfNotes;
     @FXML private MFXButton resetBtn;
+    @FXML private MFXButton cancelBtn;
     @FXML private MFXButton btnSubmit;
     @FXML private ImageView helpIcon;
 
@@ -54,15 +52,13 @@ public class ConferenceRequestControllerI implements IRequestController{
     public void initialize() throws IOException, SQLException {
         initBtns();
         initializeFields();
-        datePicker.setStartingYearMonth(YearMonth.from(datePicker.getCurrentDate()));
-        NumberRange<Integer> range = new NumberRange<>(datePicker.getCurrentDate().getYear(), datePicker.getCurrentDate().getYear() + 1);
-        datePicker.setYearsRange(range);
     }
 
     @Override
     public void initBtns() {
         btnSubmit.setOnAction(e -> handleSubmit());
         resetBtn.setOnAction(e -> handleReset());
+        cancelBtn.setOnAction(e -> handleCancel());
         helpIcon.setOnMouseClicked(e -> handleHelp());
     }
 
@@ -71,21 +67,19 @@ public class ConferenceRequestControllerI implements IRequestController{
         //Initialize the list of locations to direct request to via dropdown
         ObservableList<String> longNames = FXCollections.observableArrayList();
         longNames.addAll(Repository.getRepository().getLongNameByType("CONF"));
-        Collections.sort(longNames);
         cbLongName.setItems(longNames);
 
         //Dropdown for employee selection
         ObservableList<String> employees =
                 FXCollections.observableArrayList();
+        employees.add("Unassigned");
         employees.addAll(EConferenceRequest.getUsernames());
-        Collections.sort(employees);
-        employees.add(0, "Unassigned");
         cbEmployeesToAssign.setItems(employees);
 
         //Dropdown for duration selection
         ObservableList<Integer> duration =
                 FXCollections.observableArrayList();
-        duration.addAll(10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
+        duration.addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         cbDuration.setItems(duration);
 
         // Dropdown for reservationHour
@@ -166,17 +160,18 @@ public class ConferenceRequestControllerI implements IRequestController{
 
     @Override
     public void handleReset() {
-        datePicker.clear();
+        datePicker.setValue(null);
         reservationHour.setValue(12);
         reservationMinute.setValue("00");
-        reservationAmPm.setValue("PM");
-        datePicker.clear();
-        cbDuration.clear();
-        eventNameTextField.clear();
-        bookingReasonTextField.clear();
-        tfNotes.clear();
-        cbEmployeesToAssign.clear();
+        reservationAmPm.setValue("AM");
+        datePicker.setValue(null);
+        cbDuration.setValue(null);
+        eventNameTextField.setText("");
+        bookingReasonTextField.setText("");
+        tfNotes.setText("");
+        cbEmployeesToAssign.setText("Employees Available");
         cbLongName.clear();
+        cbLongName.replaceSelection("All Room Names: ");
     }
 
     @Override
@@ -280,6 +275,7 @@ public class ConferenceRequestControllerI implements IRequestController{
         });
 
         //set the cancel and reset buttons to not be visible
+        cancelBtn.setVisible(false);
         resetBtn.setVisible(false);
     }
 }

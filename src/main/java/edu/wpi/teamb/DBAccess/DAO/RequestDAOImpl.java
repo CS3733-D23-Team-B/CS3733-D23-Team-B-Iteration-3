@@ -37,11 +37,18 @@ public class RequestDAOImpl implements IDAO {
     @Override
     public IFull get(Object id) {
         int whichRequest = 0;
-        //ResultSet rs = DButils.getRowCond("requests", "requesttype", "id = " + id);
+        ResultSet rs = DButils.getRowCond("requests", "requesttype", "id = " + id);
         String requestType = null;
-        for (Request r : requests) {
-            if (r.getId() == (Integer) id) {
-                requestType = r.getRequestType();
+        while (true) {
+            try {
+                if (!rs.next()) break;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                requestType = rs.getString("requesttype");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
         switch (requestType) {

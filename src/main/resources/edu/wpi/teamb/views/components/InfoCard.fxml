@@ -21,19 +21,19 @@
             <ColorAdjust brightness="1.0" />
          </effect>
       </ImageView>
-      <VBox fx:id="buttonContainerVBox" layoutX="819.0" layoutY="63.0" prefHeight="116.0" prefWidth="138.0">
+      <VBox fx:id="buttonContainerVBox" layoutX="879.0" layoutY="63.0" prefHeight="116.0" prefWidth="78.0">
          <children>
-            <MFXButton fx:id="editButton" prefHeight="40.0" prefWidth="147.0" style="-fx-background-color: #012d5a; -fx-border-color: #8CA6FE; -fx-border-radius: 8px; -fx-background-radius: 8px;" text="Edit" textFill="WHITE">
+            <MFXButton fx:id="editButton" prefHeight="50.0" prefWidth="118.0" style="-fx-background-color: #012d5a; -fx-border-color: #8CA6FE; -fx-border-radius: 8px; -fx-background-radius: 8px;" text="Edit" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </MFXButton>
-            <MFXButton fx:id="deleteButton" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #f44336; -fx-border-color: #8CA6FE; -fx-border-radius: 8px; -fx-background-radius: 8px;" text="Delete" textFill="WHITE">
+            <MFXButton fx:id="deleteButton" prefHeight="50.0" prefWidth="118.0" style="-fx-background-color: #f44336; -fx-border-color: #8CA6FE; -fx-border-radius: 8px; -fx-background-radius: 8px;" text="Delete" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </MFXButton>
-            <MFXButton fx:id="completeButton" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: #f6bd38; -fx-border-color: #8CA6FE; -fx-border-radius: 8px; -fx-background-radius: 8px;" text="Mark as Completed" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <MFXButton fx:id="completeButton" prefHeight="50.0" prefWidth="118.0" style="-fx-background-color: #f6bd38; -fx-border-color: #8CA6FE; -fx-border-radius: 8px; -fx-background-radius: 8px;" text="Complete" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

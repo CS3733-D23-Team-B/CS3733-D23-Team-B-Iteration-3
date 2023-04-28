@@ -152,7 +152,7 @@ public class CreditsController {
             popup.setImage(new Image(getClass().getResource("edu/wpi/teamb/img/meal-times.PNG").toExternalForm()));
         });
         phoneCall.setOnMouseClicked(e->{
-            popup.setImage(new Image(getClass().getResource("edu/wpi/teamb/img/meeting.png").toExternalForm()));
+            popup.setImage(new Image(getClass().getResource("edu/wpi/teamb/img/phone-call.png").toExternalForm()));
         });
         reject.setOnMouseClicked(e->{
             popup.setImage(new Image(getClass().getResource("edu/wpi/teamb/img/reject.png").toExternalForm()));

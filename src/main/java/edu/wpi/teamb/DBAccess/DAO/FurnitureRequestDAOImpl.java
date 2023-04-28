@@ -48,11 +48,20 @@ public class FurnitureRequestDAOImpl implements IDAO {
         @Override
         public FullFurnitureRequest get(Object id) {
             Integer idInt = (Integer) id;
-            for (FullFurnitureRequest fr : furnitureRequests) {
-                if (fr.getId() == idInt) {
-                    return fr;
-                }
-            } return null;
+            FurnitureRequest fr = null;
+            Request r = null;
+            try {
+                ResultSet rs = DButils.getRowCond("furniturerequests", "*", "id = " + idInt);
+                rs.next();
+                fr = new FurnitureRequest(rs);
+                ResultSet rs1 = RequestDAOImpl.getDBRowID(idInt);
+                rs1.next();
+                r = new Request(rs1);
+            } catch (SQLException e) {
+                System.err.println("ERROR Query Failed in method 'FurnitureRequestDAOImpl.get': " + e.getMessage());
+                return null;
+            }
+            return new FullFurnitureRequest(r, fr);
         }
 
         /**
@@ -96,9 +105,8 @@ public class FurnitureRequestDAOImpl implements IDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            FullFurnitureRequest ffr = new FullFurnitureRequest(id, furnitureReq[0], dateSubmitted, furnitureReq[1], furnitureReq[2], furnitureReq[3], furnitureReq[4], furnitureReq[5], Boolean.getBoolean(furnitureReq[6]));
-            furnitureRequests.add(ffr);
-            RequestDAOImpl.getRequestDaoImpl().getAll().add(new Request(ffr));
+            furnitureRequests.add(new FullFurnitureRequest(id, furnitureReq[0], dateSubmitted, furnitureReq[1], furnitureReq[2], furnitureReq[3], furnitureReq[4], furnitureReq[5], Boolean.getBoolean(furnitureReq[6])));
+            RequestDAOImpl.getRequestDaoImpl().getAll().add(new Request(id, furnitureReq[0], dateSubmitted, furnitureReq[1], "Furniture", furnitureReq[2], furnitureReq[3]));
         }
 
         /**
@@ -112,7 +120,7 @@ public class FurnitureRequestDAOImpl implements IDAO {
             DButils.deleteRow("furniturerequests", "id =" + ffr.getId() + "");
             DButils.deleteRow("requests", "id =" + ffr.getId() + "");
             furnitureRequests.remove(ffr);
-            Request req = new Request(ffr);
+            Request req = new Request(ffr.getId(), ffr.getEmployee(), ffr.getDateSubmitted(), ffr.getRequestStatus(), ffr.getRequestType(), ffr.getLocationName(), ffr.getNotes());
             RequestDAOImpl.getRequestDaoImpl().getAll().remove(req);
         }
 
@@ -137,7 +145,7 @@ public class FurnitureRequestDAOImpl implements IDAO {
                     furnitureRequests.set(i, ffr);
                 }
             }
-            Request req = new Request(ffr);
+            Request req = new Request(ffr.getId(), ffr.getEmployee(), ffr.getDateSubmitted(), ffr.getRequestStatus(), ffr.getRequestType(), ffr.getLocationName(), ffr.getNotes());
             RequestDAOImpl.getRequestDaoImpl().update(req);
         }
 

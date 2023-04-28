@@ -9,7 +9,7 @@ import edu.wpi.teamb.entities.requests.IRequest;
 import edu.wpi.teamb.navigation.Navigation;
 import edu.wpi.teamb.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
@@ -23,19 +23,19 @@ import org.controlsfx.control.PopOver;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Collections;
 
 public class MealRequestControllerI implements IRequestController{
 
     @FXML private MFXButton btnSubmit;
+    @FXML private MFXButton btnCancel;
     @FXML private MFXButton btnReset;
     @FXML private ImageView helpIcon;
-    @FXML private MFXFilterComboBox<String> cbAvailableMeals;
-    @FXML private MFXFilterComboBox<String> cbAvailableDrinks;
-    @FXML private MFXFilterComboBox<String> cbAvailableSnacks;
+    @FXML private MFXComboBox<String> cbAvailableMeals;
+    @FXML private MFXComboBox<String> cbAvailableDrinks;
+    @FXML private MFXComboBox<String> cbAvailableSnacks;
     @FXML private MFXTextField txtFldNotes;
-    @FXML private MFXFilterComboBox<String> cbOrderLocation;
-    @FXML private MFXFilterComboBox<String> cbEmployeesToAssign;
+    @FXML private MFXComboBox<String> cbOrderLocation;
+    @FXML private MFXComboBox<String> cbEmployeesToAssign;
     @FXML private MFXFilterComboBox<String> cbLongName;
     private EMealRequest EMealRequest;
 
@@ -53,6 +53,7 @@ public class MealRequestControllerI implements IRequestController{
     public void initBtns() {
         btnSubmit.setOnAction(e -> handleSubmit());
         btnReset.setOnAction(e -> handleReset());
+        btnCancel.setOnAction(e -> handleCancel());
         helpIcon.setOnMouseClicked(e -> handleHelp());
     }
 
@@ -61,37 +62,31 @@ public class MealRequestControllerI implements IRequestController{
         // DROPDOWN INITIALIZATION
         ObservableList<String> longNames = FXCollections.observableArrayList();
         longNames.addAll(Repository.getRepository().getPracticalLongNames());
-        Collections.sort(longNames);
         cbLongName.setItems(longNames);
 
         ObservableList<String> locations =
                 FXCollections.observableArrayList(Repository.getRepository().getLongNameByType("RETL"));
-        Collections.sort(locations);
         cbOrderLocation.setItems(locations);
 
         // DROPDOWN INITIALIZATION
         ObservableList<String> employees =
                 FXCollections.observableArrayList();
+        employees.add("Unassigned");
         employees.addAll(EMealRequest.getUsernames());
-        Collections.sort(employees);
-        employees.add(0, "Unassigned");
         cbEmployeesToAssign.setItems(employees);
 
 
         // DROPDOWN INITIALIZATION
         ObservableList<String> meals = FXCollections.observableArrayList("Pizza", "Pasta", "Soup");
-        Collections.sort(meals);
         cbAvailableMeals.setItems(meals);
 
         // DROPDOWN INITIALIZATION
         ObservableList<String> drinks =
                 FXCollections.observableArrayList("Water", "Coca-Cola", "Ginger-Ale");
-        Collections.sort(drinks);
         cbAvailableDrinks.setItems(drinks);
 
         // DROPDOWN INITIALIZATION
         ObservableList<String> snacks = FXCollections.observableArrayList("Chips", "Apple");
-        Collections.sort(snacks);
         cbAvailableSnacks.setItems(snacks);
     }
 
@@ -137,11 +132,17 @@ public class MealRequestControllerI implements IRequestController{
     public void handleReset() {
         //Reset the combo-boxes
         cbOrderLocation.clear();
+        cbOrderLocation.replaceSelection("Order Location");
         cbEmployeesToAssign.clear();
+        cbEmployeesToAssign.replaceSelection("Employees Available");
         cbAvailableMeals.clear();
+        cbAvailableMeals.replaceSelection("Available Meals:");
         cbAvailableDrinks.clear();
+        cbAvailableDrinks.replaceSelection("Available Drinks:");
         cbAvailableSnacks.clear();
+        cbAvailableSnacks.replaceSelection("Available Snacks:");
         cbLongName.clear();
+        cbLongName.replaceSelection("All Room Names: ");
         //Reset text fields
         txtFldNotes.clear();
     }
@@ -218,5 +219,6 @@ public class MealRequestControllerI implements IRequestController{
 
         //make the reset and cancel buttons not visible
         btnReset.setVisible(false);
+        btnCancel.setVisible(false);
     }
 }

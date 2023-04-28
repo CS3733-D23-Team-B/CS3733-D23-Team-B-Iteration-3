@@ -8,7 +8,7 @@ import edu.wpi.teamb.entities.requests.EMoveRequest;
 import edu.wpi.teamb.navigation.Navigation;
 import edu.wpi.teamb.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXRadioButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,11 +31,12 @@ import java.util.ArrayList;
 public class MoveRequestControllerI implements IRequestController{
 
     @FXML private MFXButton btnSubmit;
+    @FXML private MFXButton btnCancel;
     @FXML private MFXButton btnReset;
     @FXML private ImageView helpIcon;
     @FXML private VBox tableVbox;
-    @FXML private MFXFilterComboBox<String> cdRoomToMove;
-    @FXML private MFXFilterComboBox<Integer> cdWheretoMove;
+    @FXML private MFXComboBox<String> cdRoomToMove;
+    @FXML private MFXComboBox<Integer> cdWheretoMove;
     @FXML private DatePicker dateOfMove;
     @FXML private TableView<Move> tbFutureMoves;
     @FXML private MFXButton btnRemoveMove;
@@ -75,6 +76,7 @@ public class MoveRequestControllerI implements IRequestController{
     public void initBtns() {
         btnSubmit.setOnAction(e -> handleSubmit());
         btnReset.setOnAction(e -> handleReset());
+        btnCancel.setOnAction(e -> handleCancel());
         helpIcon.setOnMouseClicked(e -> handleHelp());
         btnRemoveMove.setOnMouseClicked(e -> handleRemoveMove());
         btnEditRequest.setOnMouseClicked(e -> handleEditRequest());

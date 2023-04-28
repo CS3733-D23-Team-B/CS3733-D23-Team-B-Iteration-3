@@ -143,7 +143,7 @@ public class CreditsPageController {
             popup.setImage(new Image("edu/wpi/teamb/img/meal-times.PNG"));
         });
         phoneCall.setOnMouseClicked(e -> {
-            popup.setImage(new Image("edu/wpi/teamb/img/meeting.png"));
+            popup.setImage(new Image("edu/wpi/teamb/img/phone-call.png"));
         });
         reject.setOnMouseClicked(e -> {
             popup.setImage(new Image("edu/wpi/teamb/img/reject.png"));

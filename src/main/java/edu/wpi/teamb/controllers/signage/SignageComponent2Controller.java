@@ -1,4 +1,4 @@
-package edu.wpi.teamb.controllers.components;
+package edu.wpi.teamb.controllers.signage;
 
 public class SignageComponent2Controller {
 }

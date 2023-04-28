@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -31,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class SubmittedRequestsController {
+    @FXML private MFXButton btnCancel;
     @FXML private ImageView helpIcon;
     @FXML private JFXHamburger menuBurger;
     @FXML private JFXDrawer menuDrawer;
@@ -39,8 +40,8 @@ public class SubmittedRequestsController {
     @FXML VBox vboxActivateNav;
     @FXML VBox vboxActivateNav1;
     @FXML private ScrollPane allRequestsScrollPane;
-    @FXML private MFXFilterComboBox<String> cbFilterCategory;
-    @FXML private MFXFilterComboBox<String> cbFilterOptions;
+    @FXML private MFXComboBox<String> cbFilterCategory;
+    @FXML private MFXComboBox<String> cbFilterOptions;
 
     //entity object of class that contains all the methods to get the requests
     private EAllRequests allRequestsE;
@@ -58,7 +59,9 @@ public class SubmittedRequestsController {
         hoverHelp();
         initComboBoxChangeListeners();
         loadRequestsIntoContainer();
-        initializeNavGates();
+        navPane.setMouseTransparent(true);
+        activateNav();
+        deactivateNav();
     }
 
     private void initScrollPane() {
@@ -240,25 +243,14 @@ public class SubmittedRequestsController {
     }
 
     /**
-     * For some reason there are occasions when the nav-bar gates for toggling its handling does not start correctly
-     * This fixes this issue
-     */
-    public void initializeNavGates(){
-        activateNav();
-        deactivateNav();
-        navPane.setMouseTransparent(true);
-        vboxActivateNav.setDisable(false);
-        navLoaded = false;
-        vboxActivateNav1.setDisable(true);
-    }
-
-    /**
      * Utilizes a gate to swap between handling the navdrawer and the rest of the page
      * Swaps ownership of the strip to the navdraw
      */
     public void activateNav(){
         vboxActivateNav.setOnMouseEntered(event -> {
             if(!navLoaded) {
+                System.out.println("on");
+                navPane.setPickOnBounds(false);
                 navPane.setMouseTransparent(false);
                 navLoaded = true;
                 vboxActivateNav.setDisable(true);
@@ -275,6 +267,7 @@ public class SubmittedRequestsController {
     public void deactivateNav(){
         vboxActivateNav1.setOnMouseEntered(event -> {
             if(navLoaded){
+                System.out.println("off");
                 navPane.setMouseTransparent(true);
                 vboxActivateNav.setDisable(false);
                 navLoaded = false;
@@ -304,11 +297,10 @@ public class SubmittedRequestsController {
                     burgerOpen.setRate(burgerOpen.getRate() * -1);
                     burgerOpen.play();
                     if (menuDrawer.isOpened()) {
+                        menuDrawer.toFront();
                         menuDrawer.close();
-                        vboxActivateNav1.toFront();
                     } else {
                         menuDrawer.toFront();
-                        menuBurger.toFront();
                         menuDrawer.open();
                     }
                 });

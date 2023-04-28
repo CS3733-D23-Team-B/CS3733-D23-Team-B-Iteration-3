@@ -2,7 +2,8 @@
 
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,29 +15,38 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import net.kurobako.gesturefx.GesturePane?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #272523;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamb.controllers.signage.SignageController">
     <center>
     <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
         <children>
+            <GesturePane fx:id="pane" layoutX="690.0" layoutY="157.0" prefHeight="480.0" prefWidth="360.0">
+            </GesturePane>
             <StackPane layoutX="-240.0" layoutY="1.0" prefHeight="698.0" prefWidth="1253.0" />
             <ImageView fitHeight="733.0" fitWidth="1316.0" layoutX="-172.0" layoutY="-12.0" opacity="0.5" pickOnBounds="true" preserveRatio="false">
                 <image>
                     <Image url="@../../img/bwh-background.jpg" />
                 </image>
             </ImageView>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7089a2" height="586.0" layoutX="-23.0" layoutY="84.0" stroke="#ffffff00" strokeType="INSIDE" width="1100.0" />
+            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#739cb9" height="586.0" layoutX="-23.0" layoutY="84.0" stroke="#0000004e" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" width="1100.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012d5a" height="50.0" layoutX="-162.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1347.0" />
             <Text fill="WHITE" layoutX="-21.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Signage" textAlignment="CENTER" wrappingWidth="1164.103515625">
                 <font>
                     <Font name="System Bold" size="36.0" />
                 </font>
             </Text>
-            <VBox layoutX="3.0" layoutY="117.0" prefHeight="40.0" prefWidth="706.0">
+            <VBox alignment="TOP_CENTER" layoutX="-22.0" layoutY="117.0" prefHeight="40.0" prefWidth="673.0">
                <children>
-                  <MFXFilterComboBox fx:id="cbLocation" floatingText="Location" onAction="#clickCbLocation" prefHeight="40.0" prefWidth="376.0" style="-fx-border-color: #012d5a" />
+                  <MFXComboBox fx:id="cbLocation" floatingText="Choose sign" onAction="#clickCbLocation" prefHeight="40.0" prefWidth="588.0" style="-fx-border-color: #000000;" />
                </children></VBox>
-            <VBox fx:id="signVbox" layoutX="138.0" layoutY="170.0" prefHeight="489.0" prefWidth="705.0" />
+            <VBox fx:id="signVbox" layoutX="24.0" layoutY="203.0" prefHeight="434.0" prefWidth="586.0" />
+            <Separator layoutX="644.0" layoutY="117.0" orientation="VERTICAL" prefHeight="518.0" prefWidth="22.0" />
+            <Text fill="WHITE" layoutX="765.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INTERACTIVE MAP" textAlignment="CENTER" wrappingWidth="208.76531982421875">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Text>
         </children>
     </AnchorPane>
     </center>

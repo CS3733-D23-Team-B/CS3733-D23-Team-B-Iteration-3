@@ -767,6 +767,12 @@ public class Repository {
 
     //TODO LocationName methods
 
+    public int getNodeIDfromLongName(String longName) {
+        int id = locationNameDAO.getNodeIDfromLongName(longName);
+        dbConnection.closeDBconnection();
+        dbConnection.forceClose();
+        return id;
+    }
 
 
     //TODO Move methods
@@ -1634,13 +1640,6 @@ public class Repository {
 
     public ArrayList<Node> getNodesByFloor(String floor) {
         ArrayList<Node> nodes = nodeDAO.getNodesFromFloor(floor);
-        dbConnection.closeDBconnection();
-        dbConnection.forceClose();
-        return nodes;
-    }
-
-    public ArrayList<FullNode> getFullNodesByFloor(String floor) {
-        ArrayList<FullNode> nodes = nodeDAO.getFullNodesFromFloor(floor);
         dbConnection.closeDBconnection();
         dbConnection.forceClose();
         return nodes;

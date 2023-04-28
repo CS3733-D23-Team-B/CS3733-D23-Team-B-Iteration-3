@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="778.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamb.controllers.components.SignageComponent2Controller">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="778.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamb.controllers.signage.SignageComponent2Controller">
     <children>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f1f1f1" height="315.0" layoutX="42.0" layoutY="47.0" stroke="BLACK" strokeType="INSIDE" width="695.0" />
       <Text fill="#465777" layoutX="268.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stop here for:" wrappingWidth="243.001953125">

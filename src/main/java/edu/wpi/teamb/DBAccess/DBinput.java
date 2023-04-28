@@ -1045,6 +1045,9 @@ public class DBinput {
                         startDate date NOT NULL DEFAULT CURRENT_DATE,
                         endDate date,
                         singleBlock boolean DEFAULT true,
+                        signLocation varchar(255) DEFAULT 'Info Node 19 Floor 2',
+                        constraint fk_longName foreign key (signLocation) references locationnames(longName)
+                        on update cascade on delete set default,
                         PRIMARY KEY (signageGroup, locationName, startDate))
                     """;
             int tableUpdateSignage = tableStmt.executeUpdate(createTableSignage);

@@ -9,7 +9,7 @@ import edu.wpi.teamb.entities.requests.IRequest;
 import edu.wpi.teamb.navigation.Navigation;
 import edu.wpi.teamb.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
@@ -22,19 +22,19 @@ import org.controlsfx.control.PopOver;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collections;
 
 public class FlowerRequestControllerI implements IRequestController {
 
     @FXML private MFXButton btnSubmit;
+    @FXML private MFXButton btnCancel;
     @FXML private MFXButton btnReset;
     @FXML private ImageView helpIcon;
-    @FXML private MFXFilterComboBox<String> cbAvailableFlowers;
-    @FXML private MFXFilterComboBox<String> cdAvailableColor;
-    @FXML private MFXFilterComboBox<String> cdAvailableType;
+    @FXML private MFXComboBox<String> cbAvailableFlowers;
+    @FXML private MFXComboBox<String> cdAvailableColor;
+    @FXML private MFXComboBox<String> cdAvailableType;
     @FXML private MFXTextField txtFldNotes;
     @FXML private MFXTextField txtFldMessage;
-    @FXML private MFXFilterComboBox<String> cbEmployeesToAssign;
+    @FXML private MFXComboBox<String> cbEmployeesToAssign;
     @FXML private MFXFilterComboBox<String> cbLongName;
 
     private final EFlowerRequest EFlowerRequest;
@@ -53,6 +53,7 @@ public class FlowerRequestControllerI implements IRequestController {
     public void initBtns() {
         btnSubmit.setOnAction(e -> handleSubmit());
         btnReset.setOnAction(e -> handleReset());
+        btnCancel.setOnAction(e -> handleCancel());
         helpIcon.setOnMouseClicked(e -> handleHelp());
     }
 
@@ -61,32 +62,27 @@ public class FlowerRequestControllerI implements IRequestController {
         //Initialize the list of locations to direct request to via dropdown
         ObservableList<String> longNames = FXCollections.observableArrayList();
         longNames.addAll(Repository.getRepository().getPracticalLongNames());
-        Collections.sort(longNames);
         cbLongName.setItems(longNames);
 
         //Set types of flowers
         ObservableList<String> flowers = FXCollections.observableArrayList("Rose", "Tulip", "Daisy", "Lily", "Sunflower");
-        Collections.sort(flowers);
         cbAvailableFlowers.setItems(flowers);
 
         //Set colors of flowers
-        ObservableList<String> colors = FXCollections.observableArrayList("Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "White", "Black", "Brown");
-        Collections.sort(colors);
+        ObservableList<String> colors = FXCollections.observableArrayList("Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "White", "Black", "Brown", "Other");
         cdAvailableColor.setItems(colors);
 
 
         //Set delivery types
-        ObservableList<String> deliveryType = FXCollections.observableArrayList("Bouquet", "Single Flower", "Vase");
-        Collections.sort(deliveryType);
+        ObservableList<String> deliveryType = FXCollections.observableArrayList("Bouquet", "Single Flower", "Vase", "Other");
         cdAvailableType.setItems(deliveryType);
         //todo: fix locations
 
         //Set list of employees
         ObservableList<String> employees =
                 FXCollections.observableArrayList();
+        employees.add("Unassigned");
         employees.addAll(EFlowerRequest.getUsernames());
-        Collections.sort(employees);
-        employees.add(0, "Unassigned");
         cbEmployeesToAssign.setItems(employees);
     }
 
@@ -129,13 +125,14 @@ public class FlowerRequestControllerI implements IRequestController {
 
     @Override
     public void handleReset() {
-        cbAvailableFlowers.clear();
-        cdAvailableColor.clear();
-        cdAvailableType.clear();
+        cbAvailableFlowers.getSelectionModel().clearSelection();
+        cdAvailableColor.getSelectionModel().clearSelection();
+        cdAvailableType.getSelectionModel().clearSelection();
         txtFldMessage.clear();
         txtFldNotes.clear();
-        cbEmployeesToAssign.clear();
+        cbEmployeesToAssign.getSelectionModel().clearSelection();
         cbLongName.clear();
+        cbLongName.replaceSelection("All Room Names: ");
     }
 
     @Override
@@ -207,5 +204,6 @@ public class FlowerRequestControllerI implements IRequestController {
         });
         //set the reset and cancel buttons to not be visible
         btnReset.setVisible(false);
+        btnCancel.setVisible(false);
     }
 }

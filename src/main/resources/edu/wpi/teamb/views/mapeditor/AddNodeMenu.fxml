@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.Pane?>
@@ -16,11 +16,11 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </MFXTextField>
-            <MFXFilterComboBox fx:id="cbNodeType" floatingText="Node Type" prefHeight="39.0" prefWidth="257.0">
+            <MFXComboBox fx:id="cbNodeType" floatingText="Node Type" prefHeight="39.0" prefWidth="257.0">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
-            </MFXFilterComboBox>
+            </MFXComboBox>
             <MFXTextField fx:id="tfLongName" floatingText="Long Name" prefHeight="48.0" prefWidth="257.0">
                <VBox.margin>
                   <Insets bottom="20.0" />
@@ -41,7 +41,7 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </MFXTextField>
-            <MFXButton fx:id="btnSubmitNodeDetails" text="Submit" />
+            <MFXButton fx:id="btnSubmitNodeDetails" text="Submit Node Details" />
          </children>
       </VBox>
    </children>

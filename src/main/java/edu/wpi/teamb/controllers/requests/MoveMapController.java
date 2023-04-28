@@ -61,12 +61,6 @@ public class MoveMapController {
     @FXML private MFXButton btn1;
     @FXML private MFXButton btn2;
     @FXML private MFXButton btn3;
-
-    //Stuff for nav bar
-    @FXML private Pane navPane;
-    @FXML private VBox vboxActivateNav;
-    @FXML private VBox vboxActivateNav1;
-    private boolean navLoaded;
     private String currentFloor = "1";
 
     public GesturePane pane = new GesturePane();
@@ -115,45 +109,43 @@ public class MoveMapController {
         handle_move();
         displayMoves(currentFloor);
         System.out.println("Move Map initialized");
-
-        initializeNavGates();
     }
 
     private void changeButtonColor(String currentFloor) {
         switch (currentFloor) {
             case "L1" -> {
                 btnL1.setStyle("-fx-background-color: #f6bd38");
-                btnL2.setStyle("-fx-background-color: #012d5a");
-                btn1.setStyle("-fx-background-color: #012d5a");
-                btn2.setStyle("-fx-background-color: #012d5a");
-                btn3.setStyle("-fx-background-color: #012d5a");
+                btnL2.setStyle("-fx-background-color: #1C4EFE");
+                btn1.setStyle("-fx-background-color: #1C4EFE");
+                btn2.setStyle("-fx-background-color: #1C4EFE");
+                btn3.setStyle("-fx-background-color: #1C4EFE");
             }
             case "L2" -> {
-                btnL1.setStyle("-fx-background-color: #012d5a");
+                btnL1.setStyle("-fx-background-color: #1C4EFE");
                 btnL2.setStyle("-fx-background-color: #f6bd38");
-                btn1.setStyle("-fx-background-color: #012d5a");
-                btn2.setStyle("-fx-background-color: #012d5a");
-                btn3.setStyle("-fx-background-color: #012d5a");
+                btn1.setStyle("-fx-background-color: #1C4EFE");
+                btn2.setStyle("-fx-background-color: #1C4EFE");
+                btn3.setStyle("-fx-background-color: #1C4EFE");
             }
             case "1" -> {
-                btnL1.setStyle("-fx-background-color: #012d5a");
-                btnL2.setStyle("-fx-background-color: #012d5a");
+                btnL1.setStyle("-fx-background-color: #1C4EFE");
+                btnL2.setStyle("-fx-background-color: #1C4EFE");
                 btn1.setStyle("-fx-background-color: #f6bd38");
-                btn2.setStyle("-fx-background-color: #012d5a");
-                btn3.setStyle("-fx-background-color: #012d5a");
+                btn2.setStyle("-fx-background-color: #1C4EFE");
+                btn3.setStyle("-fx-background-color: #1C4EFE");
             }
             case "2" -> {
-                btnL1.setStyle("-fx-background-color: #012d5a");
-                btnL2.setStyle("-fx-background-color: #012d5a");
-                btn1.setStyle("-fx-background-color: #012d5a");
+                btnL1.setStyle("-fx-background-color: #1C4EFE");
+                btnL2.setStyle("-fx-background-color: #1C4EFE");
+                btn1.setStyle("-fx-background-color: #1C4EFE");
                 btn2.setStyle("-fx-background-color: #f6bd38");
-                btn3.setStyle("-fx-background-color: #012d5a");
+                btn3.setStyle("-fx-background-color: #1C4EFE");
             }
             case "3" -> {
-                btnL1.setStyle("-fx-background-color: #012d5a");
-                btnL2.setStyle("-fx-background-color: #012d5a");
-                btn1.setStyle("-fx-background-color: #012d5a");
-                btn2.setStyle("-fx-background-color: #012d5a");
+                btnL1.setStyle("-fx-background-color: #1C4EFE");
+                btnL2.setStyle("-fx-background-color: #1C4EFE");
+                btn1.setStyle("-fx-background-color: #1C4EFE");
+                btn2.setStyle("-fx-background-color: #1C4EFE");
                 btn3.setStyle("-fx-background-color: #f6bd38");
             }
         }
@@ -236,56 +228,6 @@ public class MoveMapController {
                 });
     }
 
-    /**
-     * For some reason there are occasions when the nav-bar gates for toggling its handling does not start correctly
-     * This fixes this issue
-     */
-    public void initializeNavGates(){
-        activateNav();
-        deactivateNav();
-        navPane.setMouseTransparent(true);
-        vboxActivateNav.setDisable(false);
-        navLoaded = false;
-        vboxActivateNav1.setDisable(true);
-    }
-
-    /**
-     * Utilizes a gate to swap between handling the navdrawer and the rest of the page
-     * Swaps ownership of the strip to the navdraw
-     */
-
-    public void activateNav(){
-        vboxActivateNav.setOnMouseEntered(event -> {
-            if(!navLoaded) {
-                System.out.println("on");
-                navPane.setMouseTransparent(false);
-                navLoaded = true;
-                vboxActivateNav.setDisable(true);
-                vboxActivateNav1.setDisable(false);
-            }
-        });
-    }
-
-    /**
-     * Utilizes a gate to swap between handling the navdrawer and the rest of the page
-     * Swaps ownership of the strip to the page
-     */
-    public void deactivateNav(){
-        vboxActivateNav1.setOnMouseEntered(event -> {
-            if(navLoaded){
-                System.out.println("off");
-                navPane.setMouseTransparent(true);
-                vboxActivateNav.setDisable(false);
-                navLoaded = false;
-                vboxActivateNav1.setDisable(true);
-            }
-        });
-    }
-
-    /**
-     * Utilizes a gate to swap between handling the navdrawer and the rest of the page
-     * Swaps ownership of the strip to the navdraw
-     */
     public void initNavBar() {
         // https://github.com/afsalashyana/JavaFX-Tutorial-Codes/tree/master/JavaFX%20Navigation%20Drawer/src/genuinecoder
         try {
@@ -307,10 +249,7 @@ public class MoveMapController {
                     burgerOpen.play();
                     if (menuDrawer.isOpened()) {
                         menuDrawer.close();
-                        vboxActivateNav1.toFront();
                     } else {
-                        menuDrawer.toFront();
-                        menuBurger.toFront();
                         menuDrawer.open();
                     }
                 });

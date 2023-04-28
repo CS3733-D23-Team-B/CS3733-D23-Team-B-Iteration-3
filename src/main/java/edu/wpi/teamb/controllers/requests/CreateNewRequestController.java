@@ -8,7 +8,7 @@ import edu.wpi.teamb.entities.ELogin;
 import edu.wpi.teamb.navigation.Navigation;
 import edu.wpi.teamb.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -38,6 +38,16 @@ public class CreateNewRequestController {
     @FXML private ImageView icon3;
     @FXML private ImageView icon4;
     @FXML private ImageView icon5;
+    @FXML
+    private Rectangle back1;
+    @FXML
+    private Rectangle back2;
+    @FXML
+    private Rectangle back3;
+    @FXML
+    private Rectangle back4;
+    @FXML
+    private Rectangle back5;
 
     ELogin.PermissionLevel adminTest;
     private NavDrawerController navDrawerController;
@@ -58,10 +68,10 @@ public class CreateNewRequestController {
         requestVbox.getChildren().clear();
         loadPage2();
         navPane.setMouseTransparent(true);
-        initializeNavGates();
     }
 
     public void initIcons() {
+        back1 = new Rectangle();
         icon1.setOnMouseClicked(event->{
             loadPage1();}
         );
@@ -200,7 +210,7 @@ public class CreateNewRequestController {
     public void initializeFields() {
 
         ObservableList<String> locations = FXCollections.observableArrayList("Meal Delivery", "Conference Room",
-                "Flower Delivery", "Furniture Delivery", "Office Supplies");
+                "Flower Delivery", "Furniture Delivery", "Office Supplies", "Other");
         // TODO: only add thise if the user is an admin
         if (adminTest == ELogin.PermissionLevel.ADMIN) {
             ObservableList<String> AdminOnly = FXCollections.observableArrayList("Move");
@@ -214,19 +224,6 @@ public class CreateNewRequestController {
     }
 
     /**
-     * For some reason there are occasions when the nav-bar gates for toggling its handling does not start correctly
-     * This fixes this issue
-     */
-    public void initializeNavGates(){
-        activateNav();
-        deactivateNav();
-        navPane.setMouseTransparent(true);
-        vboxActivateNav.setDisable(false);
-        navLoaded = false;
-        vboxActivateNav1.setDisable(true);
-    }
-
-    /**
      * Utilizes a gate to swap between handling the navdrawer and the rest of the page
      * Swaps ownership of the strip to the navdraw
      */
@@ -234,6 +231,8 @@ public class CreateNewRequestController {
     public void activateNav(){
         vboxActivateNav.setOnMouseEntered(event -> {
             if(!navLoaded) {
+                System.out.println("on");
+                navPane.setPickOnBounds(false);
                 navPane.setMouseTransparent(false);
                 navLoaded = true;
                 vboxActivateNav.setDisable(true);
@@ -249,6 +248,7 @@ public class CreateNewRequestController {
     public void deactivateNav(){
         vboxActivateNav1.setOnMouseEntered(event -> {
             if(navLoaded){
+                System.out.println("off");
                 navPane.setMouseTransparent(true);
                 vboxActivateNav.setDisable(false);
                 navLoaded = false;
@@ -279,13 +279,13 @@ public class CreateNewRequestController {
                     burgerOpen.setRate(burgerOpen.getRate() * -1);
                     burgerOpen.play();
                     if (menuDrawer.isOpened()) {
+                        menuDrawer.toFront();
                         menuDrawer.close();
-                        vboxActivateNav1.toFront();
                     } else {
                         menuDrawer.toFront();
-                        menuBurger.toFront();
                         menuDrawer.open();
                     }
+//                    }
                 });
     }
 }

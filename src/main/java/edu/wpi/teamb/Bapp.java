@@ -81,7 +81,6 @@ public class Bapp extends Application {
 
   @Override
   public void stop() {
-    Platform.exit();
     log.info("Shutting Down");
   }
 

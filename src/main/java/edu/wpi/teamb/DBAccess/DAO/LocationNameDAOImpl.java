@@ -6,6 +6,7 @@ import edu.wpi.teamb.DBAccess.ORMs.LocationName;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class LocationNameDAOImpl implements IDAO {
@@ -24,11 +25,17 @@ public class LocationNameDAOImpl implements IDAO {
      */
     public LocationName get(Object id) {
         String name = (String) id;
-        for (LocationName ln : locationNames) {
-            if (ln.getLongName().equals(name)) {
-                return ln;
-            }
-        } return null;
+        ResultSet rs = DButils.getRowCond("LocationNames", "*", "longname = " + name);
+        try {
+        if (rs.isBeforeFirst()) { // if there is something it found
+            rs.next();
+            return new LocationName(rs); // make the locationName
+        } else
+            throw new SQLException("No rows found");
+        } catch (SQLException e) {
+            System.err.println("ERROR Query Failed in method 'LocationNameDAOImpl.get': " + e.getMessage());
+            return null;
+        }
     }
 
     /**
@@ -292,4 +299,18 @@ public class LocationNameDAOImpl implements IDAO {
         }
     }
 
+    public int getNodeIDfromLongName(String longName) {
+        try {
+            Statement stmt = DBconnection.getDBconnection().getConnection().createStatement();
+            String query = "SELECT * from locationnames join moves m on locationnames.longname = m.longname where locationnames.longname like " + longName;
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            int set = rs.getInt("nodeID");
+            rs.close();
+            return set;
+        } catch (SQLException e) {
+            System.err.println("ERROR Query Failed in method 'NodeDAOImpl.getLongNameFromNodeID': " + e.getMessage());
+            return 0;
+        }
+    }
 }

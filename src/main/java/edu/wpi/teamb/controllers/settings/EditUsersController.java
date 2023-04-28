@@ -10,7 +10,7 @@ import edu.wpi.teamb.controllers.NavDrawerController;
 import edu.wpi.teamb.navigation.Navigation;
 import edu.wpi.teamb.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +32,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 public class EditUsersController {
@@ -40,7 +39,7 @@ public class EditUsersController {
     private JFXHamburger menuBurger;
     @FXML private JFXDrawer menuDrawer;
 
-    @FXML private MFXFilterComboBox<String> cbPermissionLevel;
+    @FXML private MFXComboBox<String> cbPermissionLevel;
     @FXML private MFXTextField textPassword;
     @FXML private MFXTextField textUsername;
     @FXML private MFXTextField textEmail;
@@ -49,7 +48,6 @@ public class EditUsersController {
     @FXML private MFXButton btnAddUser;
     @FXML private MFXButton btnDeleteUser;
     @FXML private MFXButton btnEditUser;
-    @FXML private MFXButton btnBack;
     @FXML private VBox vboxEditUser;
     @FXML private VBox tableVbox;
     @FXML private Pane navPane;
@@ -87,9 +85,6 @@ public class EditUsersController {
         deactivateNav();
         // Hide the edit vbox
         //vboxEditUser.setVisible(false);
-
-        Collections.sort(permissionLevels);
-        Collections.sort(usernames);
     }
 
     public void initButtons() {
@@ -104,7 +99,6 @@ public class EditUsersController {
         btnDeleteUser.setOnMouseClicked(event -> handleDeleteUser());
         btnEditUser.setDisable(true);
         btnDeleteUser.setDisable(true);
-        btnBack.setOnMouseClicked(event -> Navigation.navigate(Screen.SETTINGS));
     }
 
     private void handleDeleteUser() {
@@ -138,29 +132,19 @@ public class EditUsersController {
         newUser.setUsername(textUsername.getText().toLowerCase());
         newUser.setPassword(textPassword.getText());
         newUser.setEmail(textEmail.getText().toLowerCase());
-        if (cbPermissionLevel.getValue() != null)
-            newUser.setPermissionLevel(permissionLevelToInt(cbPermissionLevel.getValue()));
+        newUser.setPermissionLevel(permissionLevelToInt(cbPermissionLevel.getValue()));
         if (usernameDoesNotExist(newUser) && emailDoesNotExist(newUser)) {
-            if (!nullInputs(newUser)) {
-                Repository.getRepository().addUser(newUser);
-                createAlert("User added", "User added successfully");
-            }
-            else {
-                createAlert("Empty fields", "Please enter all fields");
-            }
+            Repository.getRepository().addUser(newUser);
+            createAlert("User added", "User added successfully");
         }
         else if (!emailDoesNotExist(newUser)) {
             createAlert("Email already exists", "Please enter a different email");
         }
-        else if (!usernameDoesNotExist(newUser))
+        else
         {
             createAlert("Username already exists", "Please enter a different username");
         }
         initializeFields(); // Refresh the combo box
-    }
-
-    private boolean nullInputs(User user) {
-        return user.getName().equals("") || user.getUsername().equals("") || user.getPassword().equals("") || user.getEmail().equals("");
     }
 
 
@@ -233,23 +217,18 @@ public class EditUsersController {
         tbUsers.getColumns().clear();
         // add User attributes to the table (Name, Username, Password, Email, Permission Level)
         TableColumn<User, String> names = new TableColumn<>("Name");
-        names.setStyle("-fx-alignment: CENTER;");
         names.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
 
         TableColumn<User, String> usernames = new TableColumn<>("Username");
-        usernames.setStyle("-fx-alignment: CENTER;");
         usernames.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
 
         TableColumn<User, String> passwords = new TableColumn<>("Password");
-        passwords.setStyle("-fx-alignment: CENTER;");
         passwords.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
 
         TableColumn<User, String> emails = new TableColumn<>("Email");
-        emails.setStyle("-fx-alignment: CENTER;");
         emails.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
 
         TableColumn<User, Integer> permissions = new TableColumn<>("Permission Level");
-        permissions.setStyle("-fx-alignment: CENTER;");
         permissions.setCellValueFactory(new PropertyValueFactory<User, Integer>("permissionLevel"));
 
         tbUsers.getColumns().addAll(names, usernames, passwords, emails, permissions);
@@ -294,14 +273,12 @@ public class EditUsersController {
             return "Error"; // Error
     }
 
-    /**
-     * Utilizes a gate to swap between handling the navdrawer and the rest of the page
-     * Swaps ownership of the strip to the navdraw
-     */
 
     public void activateNav(){
         vboxActivateNav.setOnMouseEntered(event -> {
             if(!navLoaded) {
+                System.out.println("on");
+                navPane.setPickOnBounds(false);
                 navPane.setMouseTransparent(false);
                 navLoaded = true;
                 vboxActivateNav.setDisable(true);
@@ -310,13 +287,10 @@ public class EditUsersController {
         });
     }
 
-    /**
-     * Utilizes a gate to swap between handling the navdrawer and the rest of the page
-     * Swaps ownership of the strip to the page
-     */
     public void deactivateNav(){
         vboxActivateNav1.setOnMouseEntered(event -> {
             if(navLoaded){
+                System.out.println("off");
                 navPane.setMouseTransparent(true);
                 vboxActivateNav.setDisable(false);
                 navLoaded = false;
@@ -346,11 +320,10 @@ public class EditUsersController {
                     burgerOpen.setRate(burgerOpen.getRate() * -1);
                     burgerOpen.play();
                     if (menuDrawer.isOpened()) {
+                        menuDrawer.toFront();
                         menuDrawer.close();
-                        vboxActivateNav1.toFront();
                     } else {
                         menuDrawer.toFront();
-                        menuBurger.toFront();
                         menuDrawer.open();
                     }
                 });

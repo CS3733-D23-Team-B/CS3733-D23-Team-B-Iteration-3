@@ -1,4 +1,4 @@
-package edu.wpi.teamb.controllers.components;
+package edu.wpi.teamb.controllers.signage;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
