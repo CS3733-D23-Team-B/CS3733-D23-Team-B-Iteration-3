@@ -1,6 +1,7 @@
 package edu.wpi.teamb.controllers.signage;
 
 import edu.wpi.teamb.DBAccess.DAO.Repository;
+import edu.wpi.teamb.DBAccess.ORMs.Sign;
 import edu.wpi.teamb.entities.ESignage;
 import edu.wpi.teamb.pathfinding.PathFinding;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -10,9 +11,12 @@ import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -78,8 +82,45 @@ public class SignageFormController {
         stage.close();
     }
 
+    public boolean nullInputs() {
+        return directionBox.getValue() == null
+                || locationBox.getValue() == null
+                || signageGroupBox.getText().isEmpty()
+                || startDatePicker.getText().isEmpty()
+                || endDatePicker.getValue() == null;
+
+    }
+
     private void handleSubmit(){
-        
+
+        if (!nullInputs()) {
+            // Send to DB
+            Sign sign = new Sign();
+            sign.setDirection(directionBox.getValue());
+            sign.setLocationName(locationBox.getValue());
+            sign.setSignageGroup(signageGroupBox.getValue());
+            sign.setStartDate(Date.valueOf(startDatePicker.getValue()));
+            sign.setStartDate(Date.valueOf(endDatePicker.getValue()));
+            sign.setSingleBlock(false);
+
+            Repository.getRepository().addSign(sign);
+
+            // Create an alert
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Submission Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Successfully Submitted Signage Change");
+            alert.showAndWait();
+            handleClose();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Fields Incomplete");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all fields and resubmit");
+            alert.showAndWait();
+        }
+
     }
 
 
