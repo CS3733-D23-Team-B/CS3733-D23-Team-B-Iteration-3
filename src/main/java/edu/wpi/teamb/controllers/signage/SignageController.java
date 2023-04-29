@@ -20,10 +20,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -41,6 +39,7 @@ public class SignageController {
   @FXML private JFXDrawer menuDrawer;
   @FXML private MFXComboBox<String> cbLocation;
   @FXML private MFXButton btnSignageForm;
+  @FXML private MFXButton btnRemoveSign;
   @FXML private VBox signVbox;
   public GesturePane pane = new GesturePane();
     Group nodeGroup = new Group();
@@ -101,6 +100,7 @@ public class SignageController {
 
     private void init_signage_form_btn(){
         btnSignageForm.setOnMouseClicked(e -> handleSignageForm());
+        btnRemoveSign.setOnMouseClicked(e -> handleRemoveSigns());
     }
 
     public void clickCbLocation() {
@@ -204,9 +204,23 @@ public class SignageController {
     private void handleSignageForm() {
         Parent root;
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("edu/wpi/teamb/views/SignageForm.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("edu/wpi/teamb/views/signage/SignageForm.fxml")));
             Stage stage = new Stage();
-            stage.setTitle("Update Signage");
+            stage.setTitle("Add Signage");
+            stage.setScene(new Scene(root, 800, 400));
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleRemoveSigns(){
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("edu/wpi/teamb/views/signage/RemoveSignageForm.fxml")));
+            Stage stage = new Stage();
+            stage.setTitle("Remove Signage");
             stage.setScene(new Scene(root, 800, 400));
             stage.show();
         }

@@ -48,7 +48,8 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </Text>
-            <MFXButton fx:id="btnSignageForm" layoutX="24.0" layoutY="164.0" text="Modify Signs" />
+            <MFXButton fx:id="btnSignageForm" layoutX="24.0" layoutY="164.0" text="Add Sign" />
+            <MFXButton fx:id="btnRemoveSign" layoutX="97.0" layoutY="164.0" text="Remove Signs" />
         </children>
     </AnchorPane>
     </center>
