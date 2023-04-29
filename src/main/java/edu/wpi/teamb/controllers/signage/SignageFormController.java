@@ -14,11 +14,6 @@ import java.util.HashSet;
 
 public class SignageFormController {
     @FXML MFXFilterComboBox sign1;
-    @FXML MFXFilterComboBox sign2;
-    @FXML MFXFilterComboBox sign3;
-    @FXML MFXFilterComboBox sign4;
-    @FXML MFXFilterComboBox sign5;
-    @FXML MFXFilterComboBox sign6;
     @FXML MFXButton btnClose;
     @FXML MFXButton submit;
     @FXML MFXComboBox signageGroupBox;

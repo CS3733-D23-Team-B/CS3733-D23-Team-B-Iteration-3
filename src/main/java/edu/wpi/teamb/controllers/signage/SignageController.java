@@ -207,7 +207,7 @@ public class SignageController {
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("edu/wpi/teamb/views/SignageForm.fxml")));
             Stage stage = new Stage();
             stage.setTitle("Update Signage");
-            stage.setScene(new Scene(root, 1280, 720));
+            stage.setScene(new Scene(root, 800, 400));
             stage.show();
         }
         catch (IOException e) {
