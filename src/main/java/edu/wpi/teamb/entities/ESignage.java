@@ -27,6 +27,8 @@ public class ESignage {
         return Repository.getRepository().getAllSigns();
     }
 
+    public ArrayList<String> getAllLongnames() {return Repository.getRepository().getAllLongNames();}
+
     public int[] getSignXandY(String signageGroup) {
         ArrayList<Sign> signs = Repository.getRepository().getAllSigns();
         for (Sign s : signs) {
