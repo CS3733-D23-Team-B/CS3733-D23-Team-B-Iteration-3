@@ -73,7 +73,7 @@ public class EEmail {
     // Build flow and trigger user authorization request.
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
             HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, Set.of(GmailScopes.GMAIL_SEND))
-            .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(Paths.get("token").toFile().toURI())))
+            .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("src/main/resources/token")))
             .setAccessType("offline")
             .build();
     LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
